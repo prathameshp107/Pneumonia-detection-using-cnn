@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Pneumonia Detection</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <style>
+        body{
+            font-family: "Poppins", sans-serif;
+            background-color: #fffff;
+        }
+
+        .w3-bar{
+            padding-left: 150px;
+            padding-right: 150px;
+            color: #001D3D;
+        }
+
+        .w3-bar #btn {
+            margin: 16px 5px;
+            color: #001D3D;
+        }
+        
+        #mainCont{
+            margin: 50px 250px;
+        }
+        
+        #innerHalf{
+            padding: 100px;
+        }
+        
+        #innerCont{
+            margin: 30px 30px 50px 30px;
+        }
+        
+        .img-preview {
+            width: 256px;
+            height: 256px;
+            border: 5px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .img-preview div {
+            width: 100%;
+            height: 100%;
+            background-size: 256px 256px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-label{
+            display: inline-block;
+            padding: 12px 30px;
+            background: #39D2B4;
+            color: #fff;
+            font-size: 1em;
+            transition: all .4s;
+            cursor: pointer;
+        }
+
+        .upload-label:hover{
+            background: #34495E;
+            color: #39D2B4;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media(max-width: 600px){
+            #mainCont{
+                margin: 10px;
+            }
+            
+            #innerHalf{
+                padding: 20px 10px;
+            }
+
+            #innerCont{
+                margin: 30px 30px 50px 30px;
+            }
+
+            .w3-bar{
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+        }
+    </style>
+    <body>
+        
+        <!-- Navbar (sit on top) -->
+        <div class="w3-row">
+            <div class="w3-bar w3-cyan w3-card" id="myNavbar">
+                <a href="index" class="w3-bar-item w3-button w3-wide w3-hover-none w3-hover-text-grey w3-large" id="btn"><b>Pneumonia Detection</b></a>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small w3-hide-medium">
+                    <a class="w3-bar-item w3-button w3-hover-none w3-hover-text-black" id="btn"><strong>Welcome, {{sessionUser}}</strong></a>
+                    <a href="history" class="w3-bar-item w3-button w3-hover-none w3-hover-text-white w3-border w3-border-black" id="btn"><strong>History</strong></a>
+                    <a href="logout" class="w3-bar-item w3-button w3-hover-none w3-hover-text-white w3-border w3-border-black" id="btn"><strong>Logout</strong></a>
+                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+                <a href="javascript:void(0)" id="btn" class="w3-bar-item w3-button w3-right w3-hide-large w3-large w3-hover-none w3-hover-text-blue" onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w3-container w3-center" id="mainCont">
+            <form id="upload-file" method="post" enctype="multipart/form-data">
+                <label for="imageUpload" class="upload-label">
+                    Choose your X-Ray...
+                </label>
+                <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+            </form>
+
+            <div class="image-section" style="display:none;">
+                <div class="img-preview">
+                    <div id="imagePreview">
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="w3-btn w3-cyan" id="btn-predict">Predict!</button>
+                </div>
+            </div>
+
+            <div class="loader" style="display:none;"></div>
+
+            <div class="w3-panel w3-pale-red" id="badResult" style="border-radius: 15px">
+                <h3><b>Danger!!</b></h3>
+                <p style="font-size: 18px">You are infected with Pneumonia.</p>
+            </div> 
+
+            <div class="w3-panel w3-pale-green" id="goodResult" style="border-radius: 15px">
+                <h3><b>Congratulations!!</b></h3>
+                <p style="font-size: 18px">You are not-infected with Pneumonia.</p>
+            </div> 
+            
+            <div>
+                <a href="detect"><button type="button" class="w3-btn w3-cyan w3-text-white" id="btn-another">Choose Another Image</button></a>
+            </div>
+
+        </div>
+        
+        <script type="text/javascript">
+        $(document).ready(function () {
+            // Init
+            $('.image-section').hide();
+            $('.loader').hide();
+            $('#badResult').hide();
+            $('#goodResult').hide();
+            $('#btn-another').hide();
+
+            // Upload Preview
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview').hide();
+                        $('#imagePreview').fadeIn(650);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#imageUpload").change(function () {
+                $('.image-section').show();
+                $('#btn-predict').show();
+                $('#result').text('');
+                $('#result').hide();
+                readURL(this);
+            });
+
+            // Predict
+            $('#btn-predict').click(function () {
+                var form_data = new FormData($('#upload-file')[0]);
+
+                // Show loading animation
+                $(this).hide();
+                $('.loader').show();
+
+                // Make prediction by calling api /predict
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    async: true,
+                    success: function (data) {
+                        // Get and display the result
+                        $('.loader').hide();
+                        $('#result').fadeIn(600);
+                        if(data === "You are Infected With Pneumonia"){
+                            $('#badResult').show();
+                        }else{
+                            $('#goodResult').show();
+                        }
+                        $('.upload-label').hide();
+                        $('#btn-another').show();
+                        console.log('Success!');
+                    }
+                });
+            });
+
+        });
+        </script>
+    </body>
+</html>

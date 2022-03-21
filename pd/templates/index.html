@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Home</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <style>
+        body{
+            font-family: "Poppins", sans-serif;
+            background-color: #fff;
+        }
+        
+        #innerHalf{
+            padding: 50px 100px;
+        }
+        
+        #innerCont{
+            margin: 30px 30px 50px 30px;
+        }
+        
+        @media(max-width: 600px){
+            #innerHalf{
+                padding: 20px 10px;
+            }
+
+            #innerCont{
+                margin: 30px 30px 50px 30px;
+            }
+        }
+    </style>
+    <body>
+        
+        <div class="w3-row w3-center w3-cyan w3-padding-16 w3-card w3-shadow">
+            <h2 class="w3-text-white"><b>Pneumonia Detection</b></h2>
+        </div>
+        
+        <div class="w3-container">
+            <div class="w3-half">
+                <div class="w3-row w3-center" id="innerHalf">
+					{% if successFailValue == "UserFailed" %} 	
+					<div class="w3-panel w3-pale-red w3-border w3-fade">
+						<h4>Warning!</h4>
+						<p>Login Failed, Please check username or password.</p>
+					</div>
+					{% endif %}
+			
+					{% if RegistrationValue == "UserRegistrationFailed" %} 	
+					<div class="w3-panel w3-pale-green w3-border w3-fade">
+						<h4>Congratulations!</h4>
+						<p>Registration Successfull.</p>
+					</div>
+					{% endif %}
+                    <div class="w3-row w3-white w3-card w3-shadow">
+                        <h5 class="w3-cyan w3-card w3-text-white" style="padding: 10px;margin-top: 0">I'm a User</h5>
+                        <div class="w3-container" id="innerCont">
+                            <form action="checkuser" name="userForm" method="post">
+                                <label for="userEmail" class="w3-left">User Email:</label>
+                                <input type="email" name="userEmail" id="userEmail" class="w3-input w3-border w3-border-cyan"/>
+                                <label for="userPassword" class="w3-left" style="margin-top: 20px;">User Password:</label>
+                                <input type="password" name="userPassword" id="userPassword" class="w3-input w3-border w3-border-cyan"/>
+                                <input type="submit" name="userLogin" id="userLogin" class="w3-btn w3-cyan w3-text-white" style="margin-top: 20px; width: 100%;" value="Sign In"/>
+                            </form>
+                            <a href="register"><span class="w3-btn w3-text-black w3-hover-none w3-border w3-border-cyan w3-hover-text-cyan" style="margin-top: 15px; width: 100%;">I'm New Here, <span class="w3-text-cyan w3-hover-text-black">Register Me!</span></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w3-half">
+                <div class="w3-row w3-center" id="innerHalf">
+					{% if doctorsValue == "doctorFailed" %} 	
+					<div class="w3-panel w3-pale-red w3-border w3-fade">
+						<h4>Warning!</h4>
+						<p>Login Failed, Please check username or password.</p>
+					</div>
+					{% endif %}
+                    <div class="w3-row w3-white w3-card w3-shadow">
+                        <h5 class="w3-cyan w3-card w3-text-white" style="padding: 10px;margin-top: 0">I'm a Doctor</h5>
+                        <div class="w3-container" id="innerCont">
+                            <form action="checkdoctor" name="doctorForm" method="post">
+                                <label for="doctorEmail" class="w3-left">Doctor Email:</label>
+                                <input type="email" name="doctorEmail" id="doctorEmail" class="w3-input w3-border w3-border-cyan"/>
+                                <label for="doctorPassword" class="w3-left" style="margin-top: 20px;">Doctor Password:</label>
+                                <input type="password" name="doctorPassword" id="doctorPassword" class="w3-input w3-border w3-border-cyan"/>
+                                <input type="submit" name="doctorLogin" id="doctorLogin" class="w3-btn w3-cyan w3-text-white" style="margin-top: 20px; width: 100%;" value="Sign In"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

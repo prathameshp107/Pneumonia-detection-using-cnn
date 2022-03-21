@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Pneumonia Detection</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <style>
+        body{
+            font-family: "Poppins", sans-serif;
+            background-color: #fffff;
+        }
+
+        .w3-bar{
+            padding-left: 150px;
+            padding-right: 150px;
+            color: #001D3D;
+        }
+
+        .w3-bar #btn {
+            margin: 16px 5px;
+            color: #001D3D;
+        }
+        
+        #mainCont{
+            margin: 50px 250px;
+        }
+        
+        #innerHalf{
+            padding: 100px;
+        }
+        
+        #innerCont{
+            margin: 30px 30px 50px 30px;
+        }
+        
+        .img-preview {
+            width: 256px;
+            height: 256px;
+            border: 5px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .img-preview div {
+            width: 100%;
+            height: 100%;
+            background-size: 256px 256px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-label{
+            display: inline-block;
+            padding: 12px 30px;
+            background: #39D2B4;
+            color: #fff;
+            font-size: 1em;
+            transition: all .4s;
+            cursor: pointer;
+        }
+
+        .upload-label:hover{
+            background: #34495E;
+            color: #39D2B4;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media(max-width: 600px){
+            #mainCont{
+                margin: 10px;
+            }
+            
+            #innerHalf{
+                padding: 20px 10px;
+            }
+
+            #innerCont{
+                margin: 30px 30px 50px 30px;
+            }
+
+            .w3-bar{
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+        }
+    </style>
+    <body>
+        
+        <!-- Navbar (sit on top) -->
+        <div class="w3-row">
+            <div class="w3-bar w3-cyan w3-card" id="myNavbar">
+                <a href="index" class="w3-bar-item w3-button w3-wide w3-hover-none w3-hover-text-grey w3-large" id="btn"><b>Pneumonia Detection</b></a>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small w3-hide-medium">
+                    <a class="w3-bar-item w3-button w3-hover-none w3-hover-text-black" id="btn"><strong>Welcome, Doctor</strong></a>
+                    <a href="logout" class="w3-bar-item w3-button w3-hover-none w3-hover-text-white w3-border w3-border-black" id="btn"><strong>Logout</strong></a>
+                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+                <a href="javascript:void(0)" id="btn" class="w3-bar-item w3-button w3-right w3-hide-large w3-large w3-hover-none w3-hover-text-blue" onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+		
+		<div id="id01" class="w3-modal">
+			<div class="w3-modal-content">
+				<header class="w3-container w3-cyan"> 
+					<span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+					<h4><b>Patient's X-Ray Image</b></h4>
+				</header>
+				<div class="w3-container" style="margin-top: 10px;">
+					<img width="100%" height="100%" id="showImage"/>
+				</div>
+			</div>
+		</div>
+        
+        <div class="w3-container w3-center" id="mainCont">
+            <table class="w3-table w3-striped">
+                <thead class="w3-cyan">
+                    <th>Sr. No.</th>
+                    <th>Patient Email</th>
+                    <th>Patient Uploaded Image</th>
+                    <th>Generated Result</th>
+                    <th>Searched Date</th>
+                    <th>Your Opinion</th>
+                    <th>Change your Opinion</th>
+                </thead>
+                <tbody>
+                    {%for item in rowsData %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{item[1]}}</td>
+						<script>
+							var someJavaScriptVar = '{{ item[2] }}';
+						</script>
+                        <td><button onclick="openModel('{{ item[2] }}')" class="w3-button w3-green w3-hover-red">Show X-Ray Image</button></td>
+                        <td>{{item[3]}}</td>
+                        <td>{{item[4]}}</td>
+                        <td>{{item[5]}}</td>
+                        <td>
+                            {% if item[5] == 'Pending'  %}
+                                <form method="post" action="rightopt">
+                                    <input type="submit" name="right" value ="Result is right" class="w3-button w3-green w3-hover-pale-green w3-hover-text-black"/>
+                                    <input type="hidden" name="right_id" value="{{item[0]}}" />
+                                </form>
+                                <br>
+                                <form method="post" action="wrongopt">
+                                    <input type="submit" name="wrong" value ="Result is wrong" class="w3-button w3-red w3-hover-pale-red w3-hover-text-black"/>
+                                    <input type="hidden" name="wrong_id" value="{{item[0]}}" />
+                                </form>
+                            {% elif item[5] == 'Accurate Result'  %}
+                                <form method="post" action="wrongopt">
+                                    <input type="submit" name="wrong" value ="Result is wrong" class="w3-button w3-red w3-hover-pale-red w3-hover-text-black"/>
+                                    <input type="hidden" name="wrong_id" value="{{item[0]}}" />
+                                </form>
+                            {% else  %}
+                                <form method="post" action="rightopt">
+                                    <input type="submit" name="right" value ="Result is right" class="w3-button w3-green w3-hover-pale-green w3-hover-text-black"/>
+                                    <input type="hidden" name="right_id" value="{{item[0]}}" />
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+		
+		<script type="text/javascript">
+			function openModel(someJavaScriptVar){
+				document.getElementById('id01').style.display='block';
+				document.getElementById('showImage').src = "../static/" + someJavaScriptVar;
+			}
+		</script>
+    </body>
+</html>

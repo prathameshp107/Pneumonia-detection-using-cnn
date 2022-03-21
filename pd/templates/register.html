@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Registration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <style>
+        body{
+            font-family: "Poppins", sans-serif;
+            background-color: #fff;
+        }
+        
+        #mainCont{
+            margin: 0px 250px;
+        }
+        
+        #innerHalf{
+            padding: 100px;
+        }
+        
+        #innerCont{
+            margin: 0px 30px 50px 30px;
+        }
+        
+        @media(max-width: 600px){
+            #mainCont{
+                margin: 10px;
+            }
+
+            #innerHalf{
+                padding: 10px;
+            }
+
+            #innerCont{
+                margin: 0px 30px 50px 30px;
+            }
+        }
+    </style>
+    <body>
+        
+        <div class="w3-row w3-center w3-cyan w3-padding-16 w3-card w3-shadow">
+            <h2 class="w3-text-white"><b>Pneumonia Detection</b></h2>
+        </div>
+        
+        <div class="w3-container">
+            <div class="w3-row" id="mainCont">
+                <div class="w3-row w3-center" id="innerHalf">
+                    <div class="w3-row w3-white w3-card w3-shadow">
+                        <h5 class="w3-cyan w3-card w3-text-white" style="padding: 10px;margin-top: 0">Welcome, New User</h5>
+                        <div class="w3-container" id="innerCont">
+                            <form action="storedata" name="userRegisterForm" method="post">
+                                <div class="w3-half" style="margin-top: 20px;">
+                                    <label for="userRegisterFirstName" class="w3-left">User First Name:</label>
+                                    <input type="text" name="userRegisterFirstName" id="userRegisterFirstName" class="w3-input w3-border w3-border-cyan"/>
+                                </div>
+                                <div class="w3-half" style="margin-top: 20px;">
+                                    <label for="userRegisterLastName" class="w3-left">User Last Name:</label>
+                                    <input type="text" name="userRegisterLastName" id="userRegisterLastName" class="w3-input w3-border w3-border-cyan"/>
+                                </div>
+                                <label for="userRegisterEmail" class="w3-left" style="margin-top: 20px;">User Email:</label>
+                                <input type="email" name="userRegisterEmail" id="userRegisterEmail" class="w3-input w3-border w3-border-cyan"/>
+                                <label for="userRegisterPassword" class="w3-left" style="margin-top: 20px;">User Password:</label>
+                                <input type="password" name="userRegisterPassword" id="userRegisterPassword" class="w3-input w3-border w3-border-cyan"/>
+                                <input type="submit" name="userRegister" id="userRegister" class="w3-btn w3-cyan w3-text-white" style="margin-top: 20px; width: 100%;" value="Get me Registered"/>
+                            </form>
+                            <a href="index.php"><span class="w3-btn w3-text-black w3-hover-none w3-border w3-border-cyan w3-hover-text-cyan" style="margin-top: 15px; width: 100%;">I Already Have Account, <span class="w3-text-cyan w3-hover-text-black">Sign In!</span></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
